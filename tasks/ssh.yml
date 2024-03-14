@@ -1,6 +1,6 @@
 - name: Ensure .ssh directory exists.
   file:
-    dest: "{{ ssh_dest }}"
+    dest: ~/.ssh/
     mode: 0700
     state: directory
   tags:
@@ -9,9 +9,9 @@
     - ssh
 
 - name: Install ssh key
-  copy:
-    content: "{{ id_rsa }}"
-    dest: "{{ ssh_dest }}id_rsa"
+  template:
+    src: templates/id_rsa.j2
+    dest: ~/.ssh/id_rsa
     mode: 0600
     decrypt: true
   tags:
@@ -20,11 +20,10 @@
     - ssh
 
 - name: Install ssh key public
-  copy:
-    content: "{{ id_rsa_pub }}"
-    dest: "{{ ssh_dest }}id_rsa.pub"
-    mode: 0644
-    decrypt: true
+  template:
+    src: templates/id_rsa.pub.j2
+    dest: ~/.ssh/id_rsa.pub
+    mode: 0600
   tags:
     - dotfiles
     - install

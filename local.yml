@@ -1,6 +1,5 @@
 - hosts: localhost
   vars:
-    ssh_dest: "{{ lookup('env', 'HOME') }}/.ssh/"
     NODEJS_VERSION: "20"
   vars_files:
     - vault.yml
