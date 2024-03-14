@@ -1,6 +1,6 @@
 - name: Ensure .ssh directory exists.
   file:
-    dest: "{{ dest_key | dirname }}"
+    dest: "{{ ssh_dest }}"
     mode: 0700
     state: directory
   tags:
@@ -9,8 +9,8 @@
     - ssh
 - name: Install ssh key
   copy:
-    src: "{{ source_key }}"
-    dest: "{{ dest_key }}"
+    content: "{{ id_rsa }}"
+    dest: "{{ ssh_dest }}id_rsa"
     mode: 0600
   tags:
     - dotfiles
@@ -18,8 +18,8 @@
     - ssh
 - name: Install ssh key public
   copy:
-    src: "{{ source_key }}.pub"
-    dest: "{{ dest_key }}.pub"
+    content: "{{ id_rsa_pub }}"
+    dest: "{{ ssh_dest }}id_rsa.pub"
     mode: 0644
   tags:
     - dotfiles
@@ -31,4 +31,4 @@
     state: present
     key: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa.pub"
   with_fileglob:
-  - "{{ lookup('env', 'HOME') }}/.ssh/*.pub"
+    - "{{ lookup('env', 'HOME') }}/.ssh/*.pub"

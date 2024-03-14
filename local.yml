@@ -1,8 +1,8 @@
 - hosts: localhost
   vars:
-    source_key: "./.ssh/id_rsa"
-    dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
-    personal: "{{ lookup('env', 'HOME') }}/personal"
+    ssh_dest: "{{ lookup('env', 'HOME') }}/.ssh/"
+  vars_files:
+    - ./vault.yml
   pre_tasks:
   - name: Update Apt
     become: true
@@ -14,12 +14,11 @@
       - install
       - core
   tasks:
-    - include: tasks/ssh.yml
-    - include: tasks/git-setup.yml
-    - include: tasks/node-setup.yml
-    - include: tasks/npm-packages.yml
-    - include: tasks/zsh-setup.yml
-    - include: tasks/nvim-setup.yml
-    - include: tasks/dotfiles.yml
-    - include: tasks/productivity-tools.yml
-    - include: tasks/lsp.yml
+    - import_tasks: tasks/ssh.yml
+    - import_tasks: tasks/git-setup.yml
+    - import_tasks: tasks/node-setup.yml
+    - import_tasks: tasks/npm-packages.yml
+    - import_tasks: tasks/zsh-setup.yml
+    - import_tasks: tasks/nvim-setup.yml
+    - import_tasks: tasks/dotfiles.yml
+    - import_tasks: tasks/productivity-tools.yml
