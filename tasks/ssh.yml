@@ -7,24 +7,29 @@
     - dotfiles
     - install
     - ssh
+
 - name: Install ssh key
   copy:
     content: "{{ id_rsa }}"
     dest: "{{ ssh_dest }}id_rsa"
     mode: 0600
+    decrypt: true
   tags:
     - dotfiles
     - install
     - ssh
+
 - name: Install ssh key public
   copy:
     content: "{{ id_rsa_pub }}"
     dest: "{{ ssh_dest }}id_rsa.pub"
     mode: 0644
+    decrypt: true
   tags:
     - dotfiles
     - install
     - ssh
+
 - name: Set authorized key took from file
   authorized_key:
     user: "{{ lookup('env', 'USER') }}"

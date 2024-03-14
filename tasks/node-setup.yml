@@ -1,46 +1,26 @@
-- name: Install nodejs and npm
-  become: true
+- name: "Add nodejs apt key"
+  apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    state: present
+  tags:
+    - install
+    - node
+
+- name: Install the nodejs LTS repos
+  apt_repository:
+    repo: "deb https://deb.nodesource.com/node_{{ NODEJS_VERSION }}.x {{ ansible_distribution_release }} main"
+    state: present
+    update_cache: yes
+  tags:
+    - install
+    - node
+
+- name: "Install nodejs"
   apt:
-    name: ["nodejs", "npm"]
+    update_cache: yes
+    name: nodejs
+    state: present
   tags:
     - install
     - node
 
-- name: npmjs prefix
-  shell: mkdir -p ~/.local/.npm-global
-  tags:
-  - install
-  - node
-
-- name: add npmjs to path
-  shell: PATH=~/.local/.npm-global/bin:$PATH
-  tags:
-  - install
-  - node
-
-- name: npmjs global settings
-  shell: npm config set prefix '~/.local/.npm-global'
-  tags:
-  - install
-  - node
-
-- name: npmjs global settings export path in case I don't have dotfiles installed
-  shell: export PATH=~/.local/.npm-global/bin:$PATH
-  tags:
-  - install
-  - node
-  - npm-path
-
-- name: Install N
-  npm:
-    name: n
-    global: yes
-  tags:
-    - install
-    - node
-
-- name: Install correct version of Node
-  shell: n 20
-  tags:
-    - install
-    - node
