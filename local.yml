@@ -1,7 +1,8 @@
 - hosts: localhost
   vars:
     NODEJS_VERSION: "20"
-    golang_version: 
+    golang_version: "1.22.1"
+    golang_architecture: "amd64"
   vars_files:
     - vault.yml
   pre_tasks:
@@ -19,8 +20,11 @@
     - import_tasks: tasks/git-setup.yml
     - import_tasks: tasks/node-setup.yml
     - import_tasks: tasks/npm-packages.yml
+    # - import_tasks: tasks/python-setup.yml
+    - import_tasks: tasks/go-setup.yml
+    - import_tasks: tasks/rust-setup.yml
     - import_tasks: tasks/zsh-setup.yml
     - import_tasks: tasks/nvim-setup.yml
-    - import_tasks: tasks/fzf.yml
+    - import_tasks: tasks/fzf-setup.yml
     - import_tasks: tasks/dotfiles.yml
     - import_tasks: tasks/productivity-tools.yml
